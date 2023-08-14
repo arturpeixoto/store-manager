@@ -3,7 +3,6 @@ const connection = require('./connection');
 
 const findAll = async () => {
   const [product] = await connection.execute('SELECT * FROM products');
-  console.log(product);
   return camelize(product);
 };
 
