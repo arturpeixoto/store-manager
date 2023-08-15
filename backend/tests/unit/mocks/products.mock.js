@@ -22,6 +22,11 @@ const getProductsByIdFromService = {
   ],
 };
 
+const postProductsFromModel = {
+  id: 4,
+  name: 'Cinto do Batman',
+};
+
 const postProductsFromService = {
   status: 'CREATED',
   data: {
@@ -34,5 +39,6 @@ module.exports = {
   getProductsByIdFromModel,
   getAllProductsFromService,
   getProductsByIdFromService,
+  postProductsFromModel,
   postProductsFromService,
 };

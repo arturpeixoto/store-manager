@@ -25,7 +25,6 @@ const insertNewProduct = async (name) => {
 
   const newProductId = await productsModel.insert(name);
   const newProduct = await productsModel.findById(newProductId);
-  console.log(newProduct);
   return { status: 'CREATED', data: newProduct };
 };
 

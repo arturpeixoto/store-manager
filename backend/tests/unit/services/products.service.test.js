@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
-const { getAllProductsFromModel, getProductsByIdFromModel } = require('../mocks/products.mock');
+const { getAllProductsFromModel, getProductsByIdFromModel, postProductsFromModel } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 
 describe('Realizando testes - PRODUCTS SERVICE:', function () {
@@ -41,6 +41,28 @@ describe('Realizando testes - PRODUCTS SERVICE:', function () {
     const responseService = await productsService.getProductById(4);
     expect(responseService.status).to.equal('NOT_FOUND');
     expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Inserindo um produto com sucesso', async function () {
+    sinon.stub(productsModel, 'insert').resolves(4);
+    sinon.stub(productsModel, 'findById').resolves(postProductsFromModel);
+    const inputData = 'Cinto do Batman';
+    const responseData = {
+      id: 4,
+      name: 'Cinto do Batman',
+    };
+
+    const responseService = await productsService.insertNewProduct(inputData);
+    expect(responseService.status).to.equal('CREATED');
+    expect(responseService.data).to.deep.equal(responseData);
+  });
+  
+  it('Inserindo um produto sem sucesso', async function () {
+    const inputData = 'Cint';
+  
+    const responseService = await productsService.insertNewProduct(inputData);
+    expect(responseService.status).to.equal('INVALID_VALUE');
+    expect(responseService.data.message).to.deep.equal('"name" length must be at least 5 characters long');
   });
 
   afterEach(function () {
