@@ -14,11 +14,17 @@ const getSaleById = async (saleId) => {
     data: { message: 'Sale not found' }, 
   }; 
 }
-
   return { status: 'SUCCESSFUL', data };
+};
+
+const postNewSale = async (saleInfo) => {
+  const data = await salesModel.insert(saleInfo);
+
+  return { status: 'CREATED', data };
 };
 
 module.exports = { 
   getAllSales,
   getSaleById,
+  postNewSale,
 };

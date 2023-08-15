@@ -1,3 +1,5 @@
+const postProductIdFromDb = { insertId: 4 };
+
 const getAllProductsFromModel = [
   { id: 1, name: 'Martelo de Thor' },
   { id: 2, name: 'Traje de encolhimento' },
@@ -35,6 +37,7 @@ const postProductsFromService = {
 } };
 
 module.exports = {
+  postProductIdFromDb,
   getAllProductsFromModel,
   getProductsByIdFromModel,
   getAllProductsFromService,
