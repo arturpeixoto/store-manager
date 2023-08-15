@@ -4,7 +4,7 @@ const { productsModel } = require('../../../src/models');
 const { getAllProductsFromModel, getProductsByIdFromModel } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 
-describe('Realizando testes - PRODUCTS SERVICE', function () {
+describe('Realizando testes - PRODUCTS SERVICE:', function () {
   it('Recuperando todos os produtos', async function () {
     sinon.stub(productsModel, 'findAll').resolves(getAllProductsFromModel);
     const responseData = [

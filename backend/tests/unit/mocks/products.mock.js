@@ -6,7 +6,7 @@ const getAllProductsFromModel = [
 
 const getProductsByIdFromModel = { id: 1, name: 'Martelo de Thor' };
 
-const getProductsAllFromService = {
+const getAllProductsFromService = {
   status: 'SUCCESSFUL',
   data: [
     { id: 1, name: 'Martelo de Thor' },
@@ -15,8 +15,24 @@ const getProductsAllFromService = {
   ],
 };
 
+const getProductsByIdFromService = {
+  status: 'SUCCESSFUL',
+  data: [
+    { id: 1, name: 'Martelo de Thor' },
+  ],
+};
+
+const postProductsFromService = {
+  status: 'CREATED',
+  data: {
+    id: 4,
+    name: 'Cinto do Batman',
+} };
+
 module.exports = {
   getAllProductsFromModel,
   getProductsByIdFromModel,
-  getProductsAllFromService,
+  getAllProductsFromService,
+  getProductsByIdFromService,
+  postProductsFromService,
 };
