@@ -1,12 +1,12 @@
-const getAllFromModel = [
+const getAllProductsFromModel = [
   { id: 1, name: 'Martelo de Thor' },
   { id: 2, name: 'Traje de encolhimento' },
   { id: 3, name: 'Escudo do Capitão América' },
 ];
 
-const getByIdFromModel = { id: 1, name: 'Martelo de Thor' };
+const getProductsByIdFromModel = { id: 1, name: 'Martelo de Thor' };
 
-const getAllFromService = {
+const getProductsAllFromService = {
   status: 'SUCCESSFUL',
   data: [
     { id: 1, name: 'Martelo de Thor' },
@@ -16,7 +16,7 @@ const getAllFromService = {
 };
 
 module.exports = {
-  getAllFromModel,
-  getByIdFromModel,
-  getAllFromService,
+  getAllProductsFromModel,
+  getProductsByIdFromModel,
+  getProductsAllFromService,
 };

@@ -1,12 +1,12 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
-const { getAllFromModel, getByIdFromModel } = require('../mocks/products.mock');
+const { getAllProductsFromModel, getProductsByIdFromModel } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 
 describe('Realizando testes - PRODUCTS SERVICE', function () {
   it('Recuperando todos os produtos', async function () {
-    sinon.stub(productsModel, 'findAll').resolves(getAllFromModel);
+    sinon.stub(productsModel, 'findAll').resolves(getAllProductsFromModel);
     const responseData = [
         { id: 1, name: 'Martelo de Thor' },
         { id: 2, name: 'Traje de encolhimento' },
@@ -26,7 +26,7 @@ describe('Realizando testes - PRODUCTS SERVICE', function () {
   });
 
   it('Recuperando produto com sucesso com id = 1', async function () {
-    sinon.stub(productsModel, 'findById').resolves(getByIdFromModel);
+    sinon.stub(productsModel, 'findById').resolves(getProductsByIdFromModel);
     const responseData = { id: 1, name: 'Martelo de Thor' };
 
     const responseService = await productsService.getProductById(1);

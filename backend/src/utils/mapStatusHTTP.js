@@ -1,3 +1,5 @@
+// Código retirado do curso da Trybe
+
 const httpErrorMap = {
   SUCCESSFUL: 200,
   CREATED: 201,
