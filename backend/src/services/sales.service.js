@@ -1,4 +1,4 @@
-const { salesModel } = require('../models');
+const { salesModel, productsModel } = require('../models');
 
 const getAllSales = async () => {
   let data = await salesModel.findAll();
@@ -18,6 +18,14 @@ const getSaleById = async (saleId) => {
 };
 
 const postNewSale = async (saleInfo) => {
+  const findPromises = saleInfo.map((info) => productsModel.findById(info.productId));
+  const results = await Promise.all(findPromises);
+
+  const hasProductNotFound = results.some((productExists) => !productExists);
+  if (hasProductNotFound) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+  }
+
   const data = await salesModel.insert(saleInfo);
 
   return { status: 'CREATED', data };
