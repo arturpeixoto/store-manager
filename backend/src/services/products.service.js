@@ -42,9 +42,20 @@ const updatingProduct = async (productId, productToUpdate) => {
   return { status: 'SUCCESSFUL', data: updatedProduct };
 };
 
+const eliminateProduct = async (productId) => {
+  const productExists = await productsModel.findById(productId);
+  if (!productExists) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+  }
+
+  await productsModel.eliminate(productId);
+  return { status: 'NO_CONTENT' };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   insertNewProduct,
   updatingProduct,
+  eliminateProduct,
 };

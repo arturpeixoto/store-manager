@@ -22,9 +22,15 @@ const update = async (productId, productToUpdate) => {
   return connection.execute(query, [productToUpdate, productId]);
 };
 
+const eliminate = async (productId) => {
+  const query = 'DELETE FROM products WHERE id = ?';
+  return connection.execute(query, [productId]);
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
+  eliminate,
 };
