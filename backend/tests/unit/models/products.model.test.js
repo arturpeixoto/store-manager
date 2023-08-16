@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { productsModel } = require('../../../src/models');
-const { getProductsByIdFromModel, getAllProductsFromModel, postProductIdFromDb } = require('../mocks/products.mock');
+const { getProductsByIdFromModel, getAllProductsFromModel, postProductIdFromDb, returnFromDB, returnDeleteFromDB } = require('../mocks/products.mock');
 
 describe('Realizando testes - PRODUCTS MODEL:', function () {
   it('Recuperando todos os produtos com sucesso', async function () {
@@ -33,6 +33,27 @@ describe('Realizando testes - PRODUCTS MODEL:', function () {
 
     expect(insertId).to.be.a('number');
     expect(insertId).to.equal(4);
+  });
+
+  it('Alterando produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves(returnFromDB);
+
+    const productId = 1;
+    const inputData = { name: 'Cinto do Batman' };
+    const result = await productsModel.update(productId, inputData);
+
+    expect(result[0].affectedRows).to.be.equal(1);
+    expect(result[0].changedRows).to.be.equal(1);
+  });
+
+  it('Deletando produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves(returnDeleteFromDB);
+
+    const productId = 1;
+    const result = await productsModel.eliminate(productId);
+
+    expect(result[0].affectedRows).to.be.equal(1);
+    expect(result[0].info).to.be.equal('');
   });
 
   afterEach(function () {

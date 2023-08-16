@@ -8,6 +8,15 @@ const getAllProductsFromModel = [
 
 const getProductsByIdFromModel = { id: 1, name: 'Martelo de Thor' };
 
+const updatedProductFromModel = { id: 1, name: 'Cinto do Batman' };
+
+const updatedProductsFromService = {
+  status: 'SUCCESSFUL',
+  data: [
+    { id: 1, name: 'Cinto do Batman' },
+  ],
+};
+
 const getAllProductsFromService = {
   status: 'SUCCESSFUL',
   data: [
@@ -36,6 +45,31 @@ const postProductsFromService = {
     name: 'Cinto do Batman',
 } };
 
+const returnFromDB = [
+  {
+    fieldCount: 0,
+    affectedRows: 1,
+    insertId: 0,
+    info: 'Rows matched: 1  Changed: 1  Warnings: 0',
+    serverStatus: 2,
+    warningStatus: 0,
+    changedRows: 1,
+  },
+  undefined,
+];
+
+const returnDeleteFromDB = [
+  {
+    fieldCount: 0,
+    affectedRows: 1,
+    insertId: 0,
+    info: '',
+    serverStatus: 2,
+    warningStatus: 0,
+  },
+  undefined,
+];
+
 module.exports = {
   postProductIdFromDb,
   getAllProductsFromModel,
@@ -44,4 +78,8 @@ module.exports = {
   getProductsByIdFromService,
   postProductsFromModel,
   postProductsFromService,
+  returnFromDB,
+  returnDeleteFromDB,
+  updatedProductFromModel,
+  updatedProductsFromService,
 };
