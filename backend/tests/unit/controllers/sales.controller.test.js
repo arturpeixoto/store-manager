@@ -7,7 +7,7 @@ chai.use(sinonChai);
 
 const { salesService } = require('../../../src/services');
 const { salesController } = require('../../../src/controllers');
-const { getAllSalesFromService, getAllSalesFromModel, getSalesByIdFromService, getSalesByIdFromModel } = require('../mocks/sales.mock');
+const { getAllSalesFromService, getAllSalesFromModel, getSalesByIdFromService, getSalesByIdFromModel, insertSaleFromService } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES CONTROLLER:', function () {
   it('Resgatando todas as vendas com sucesso - status 200', async function () {
@@ -54,6 +54,15 @@ describe('Realizando testes - SALES CONTROLLER:', function () {
     await salesController.saleById(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(undefined);
+  });
+
+  it('Insere um produto com sucesso - status 201', async function () {
+    sinon.stub(salesService, 'postNewSale').resolves(insertSaleFromService);
+    const req = { body: [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }] };
+    const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
+    await salesController.newSale(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(insertSaleFromService.data);
   });
 
   afterEach(function () {

@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
-const { getAllSalesFromModel, getSalesByIdFromModel } = require('../mocks/sales.mock');
+const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES MODEL:', function () {
   it('Recuperando todos as vendas com sucesso', async function () {
@@ -15,14 +15,30 @@ describe('Realizando testes - SALES MODEL:', function () {
     expect(allSales).to.be.deep.equal(getAllSalesFromModel);
   });
 
-  it('Recuperando product por id com sucesso', async function () {
+  it('Recuperando venda por id com sucesso', async function () {
     sinon.stub(connection, 'execute').resolves([getSalesByIdFromModel]);
     
     const inputData = 1;
-    const product = await salesModel.findById(inputData);
+    const sale = await salesModel.findById(inputData);
 
-    expect(product).to.be.an('array');
-    expect(product).to.be.deep.equal(getSalesByIdFromModel);
+    expect(sale).to.be.an('array');
+    expect(sale).to.be.deep.equal(getSalesByIdFromModel);
+  });
+
+  it('Criando uma venda com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+      .onFirstCall()
+      .resolves([{ insertId: 3 }])
+      .onSecondCall()
+      .resolves()
+      .onThirdCall()
+      .resolves();
+
+      const inputData = [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }];
+      const sale = await salesModel.insert(inputData);
+
+      expect(sale).to.be.an('object');
+      expect(sale).to.be.deep.equal(insertSaleFromModel);
   });
 
   afterEach(function () {

@@ -33,8 +33,7 @@ const createNewSaleDate = async () => {
 const insert = async (saleInfo) => {
   let insertPromises = [];
   const saleId = await createNewSaleDate();
-  if (saleInfo && saleInfo.length > 0) {
-    insertPromises = saleInfo.map(async (sale) => {
+  insertPromises = saleInfo.map(async (sale) => {
       const saleObj = { ...sale, saleId };
       const columns = getFormattedColumnNames(saleObj);
       const placeholders = getFormattedPlaceholders(saleObj);
@@ -42,7 +41,6 @@ const insert = async (saleInfo) => {
       return connection.execute(query, [...Object.values(saleObj)]);
     });
     await Promise.all(insertPromises);
-  }
   return {
     id: saleId,
     itemsSold: saleInfo,

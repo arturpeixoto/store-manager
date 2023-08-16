@@ -1,8 +1,9 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { salesModel } = require('../../../src/models');
+const { salesModel, productsModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
-const { getAllSalesFromModel, getSalesByIdFromModel } = require('../mocks/sales.mock');
+const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel } = require('../mocks/sales.mock');
+const { getProductsByIdFromModel } = require('../mocks/products.mock');
 
 const mockDate = '2023-08-15T14:49:23.000Z';
 
@@ -69,6 +70,35 @@ describe('Realizando testes - SALES SERVICE:', function () {
     const responseService = await salesService.getSaleById(4);
     expect(responseService.status).to.equal('NOT_FOUND');
     expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Criando uma venda com sucesso', async function () {
+    sinon.stub(productsModel, 'findById')
+      .onFirstCall()
+      .resolves(getProductsByIdFromModel)
+      .onSecondCall()
+      .resolves(getProductsByIdFromModel);
+    sinon.stub(salesModel, 'insert').resolves(insertSaleFromModel);
+    const inputData = [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }];
+    const responseService = await salesService.postNewSale(inputData);
+    const responseData = { id: 3, itemsSold: [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }] };
+
+    expect(responseService.status).to.equal('CREATED');
+    expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Tentando criar uma venda, mas sem achar o produto', async function () {
+    sinon.stub(productsModel, 'findById')
+      .onFirstCall()
+      .resolves(undefined)
+      .onSecondCall()
+      .resolves(getProductsByIdFromModel);
+    const inputData = [{ productId: 4, quantity: 1 }, { productId: 1, quantity: 5 }];
+    const responseService = await salesService.postNewSale(inputData);
+    const responseData = { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+
+    expect(responseService.status).to.equal(responseData.status);
+    expect(responseService.data).to.deep.equal(responseData.data);
   });
 
   afterEach(function () {

@@ -66,9 +66,37 @@ const getSalesByIdFromService = {
   ],
 };
 
+const insertSaleFromModel = {
+  id: 3,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 1,
+    },
+    {
+      productId: 1,
+      quantity: 5,
+    },
+  ],
+};
+
+const insertSaleFromService = { 
+  status: 'CREATED', 
+  data: 
+  { 
+    id: 3, 
+    itemsSold: [
+      { productId: 1, quantity: 1 }, 
+      { productId: 1, quantity: 5 },
+    ], 
+  }, 
+};
+
 module.exports = { 
   getAllSalesFromModel,
   getSalesByIdFromModel, 
   getAllSalesFromService,
   getSalesByIdFromService,
+  insertSaleFromModel,
+  insertSaleFromService,
 };
