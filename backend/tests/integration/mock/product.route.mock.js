@@ -14,8 +14,18 @@ const returnUpdateFromDB = [{
 
 const updatedProductsByIdFromDB = { id: 1, name: 'Cinto do Batman' };
 
+const getAllProductsFromDB = [
+  { id: 1, name: 'Martelo de Thor' },
+  { id: 2, name: 'Traje de encolhimento' },
+  { id: 3, name: 'Escudo do Capitão América' },
+];
+
+const insertIdFromDB = { insertId: 1 };
+
 module.exports = {
   getProductsByIdFromDB,
   returnUpdateFromDB,
   updatedProductsByIdFromDB,
+  getAllProductsFromDB,
+  insertIdFromDB,
 };
