@@ -31,8 +31,19 @@ const postNewSale = async (saleInfo) => {
   return { status: 'CREATED', data };
 };
 
+const eliminateSale = async (saleId) => {
+  const saleExists = await salesModel.findById(saleId);
+  if (!saleExists || saleExists.length === 0) {
+    return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
+  }
+
+  await salesModel.eliminate(saleId);
+  return { status: 'NO_CONTENT' };
+};
+
 module.exports = { 
   getAllSales,
   getSaleById,
   postNewSale,
+  eliminateSale,
 };
