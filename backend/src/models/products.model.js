@@ -11,6 +11,12 @@ const findById = async (productId) => {
   return camelize(product);
 };
 
+const findMultipleById = async (productsBody) => {
+  const findPromises = productsBody.map((info) => findById(info.productId));
+  const results = await Promise.all(findPromises);
+  return results;
+};
+
 const insert = async (name) => {
   const query = 'INSERT INTO products (name) VALUE (?);';
   const [{ insertId }] = await connection.execute(query, [name]);
@@ -33,4 +39,5 @@ module.exports = {
   insert,
   update,
   eliminate,
+  findMultipleById,
 };

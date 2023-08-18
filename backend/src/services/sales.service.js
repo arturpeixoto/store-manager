@@ -18,8 +18,7 @@ const getSaleById = async (saleId) => {
 };
 
 const postNewSale = async (saleInfo) => {
-  const findPromises = saleInfo.map((info) => productsModel.findById(info.productId));
-  const results = await Promise.all(findPromises);
+  const results = await productsModel.findMultipleById(saleInfo);
 
   const hasProductNotFound = results.some((productExists) => !productExists);
   if (hasProductNotFound) {
@@ -27,7 +26,6 @@ const postNewSale = async (saleInfo) => {
   }
 
   const data = await salesModel.insert(saleInfo);
-
   return { status: 'CREATED', data };
 };
 
@@ -41,9 +39,25 @@ const eliminateSale = async (saleId) => {
   return { status: 'NO_CONTENT' };
 };
 
+const updatingSalesProducts = async (saleId, productId, quantity) => {
+  const saleExists = await salesModel.findById(saleId);
+  if (!saleExists || saleExists.length === 0) {
+    return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
+  }
+  const saleProductExists = saleExists
+    .some((saleProduct) => saleProduct.productId === Number(productId));
+  if (!saleProductExists) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found in sale' } };
+  }
+
+  const updatedSalesProducts = await salesModel.updateSalesProducts(saleId, productId, quantity);
+  return { status: 'SUCCESSFUL', data: updatedSalesProducts };
+};
+
 module.exports = { 
   getAllSales,
   getSaleById,
   postNewSale,
   eliminateSale,
+  updatingSalesProducts,
 };

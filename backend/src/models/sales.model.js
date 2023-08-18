@@ -52,9 +52,26 @@ const eliminate = async (saleId) => {
   return connection.execute(query, [saleId]);
 };
 
+const createUpdatedSaleDate = async (saleId) => {
+  const query = 'UPDATE sales SET date = NOW() WHERE id = ?';
+  return connection.execute(query, [saleId]);
+};
+
+const updateSalesProducts = async (saleId, productId, quantity) => {
+  await createUpdatedSaleDate(saleId);
+  const query = 'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?';
+  await connection.execute(query, [quantity, saleId, productId]);
+  const query1 = `SELECT product_id, quantity, date, sale_id FROM sales_products sp
+  INNER JOIN sales sa ON sa.id = sp.sale_id
+  WHERE sale_id = ? AND product_id = ?`;
+  const [[saleProduct]] = await connection.execute(query1, [saleId, productId]);
+  return camelize(saleProduct);
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   eliminate,
+  updateSalesProducts,
 };

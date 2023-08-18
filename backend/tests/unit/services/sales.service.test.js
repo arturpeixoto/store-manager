@@ -73,11 +73,8 @@ describe('Realizando testes - SALES SERVICE:', function () {
   });
 
   it('Criando uma venda com sucesso', async function () {
-    sinon.stub(productsModel, 'findById')
-      .onFirstCall()
-      .resolves(getProductsByIdFromModel)
-      .onSecondCall()
-      .resolves(getProductsByIdFromModel);
+    sinon.stub(productsModel, 'findMultipleById')
+      .resolves([{ id: 1, name: 'Martelo de Thor' }, { id: 2, name: 'Traje de encolhimento' }]);
     sinon.stub(salesModel, 'insert').resolves(insertSaleFromModel);
     const inputData = [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }];
     const responseService = await salesService.postNewSale(inputData);
@@ -88,11 +85,7 @@ describe('Realizando testes - SALES SERVICE:', function () {
   });
 
   it('Tentando criar uma venda, mas sem achar o produto', async function () {
-    sinon.stub(productsModel, 'findById')
-      .onFirstCall()
-      .resolves(undefined)
-      .onSecondCall()
-      .resolves(getProductsByIdFromModel);
+    sinon.stub(productsModel, 'findMultipleById').resolves([{ id: 1, name: 'Martelo de Thor' }, undefined]);
     const inputData = [{ productId: 4, quantity: 1 }, { productId: 1, quantity: 5 }];
     const responseService = await salesService.postNewSale(inputData);
     const responseData = { status: 'NOT_FOUND', data: { message: 'Product not found' } };

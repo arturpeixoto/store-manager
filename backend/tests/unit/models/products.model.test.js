@@ -25,6 +25,23 @@ describe('Realizando testes - PRODUCTS MODEL:', function () {
     expect(product).to.be.deep.equal(getProductsByIdFromModel);
   });
 
+  it('Recuperando multiplos product por id com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+      .onFirstCall()
+      .resolves([[{ id: 1, name: 'Martelo de Thor' }]])
+      .onSecondCall()
+      .resolves([[{ id: 2, name: 'Traje de encolhimento' }]]);
+    
+    const inputData = [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }];
+    const product = await productsModel.findMultipleById(inputData);
+
+    expect(product).to.be.an('array');
+    expect(product).to.be.deep.equal([
+      { id: 1, name: 'Martelo de Thor' },
+      { id: 2, name: 'Traje de encolhimento' },
+    ]);
+  });
+
   it('Inserindo um novo produto com sucesso', async function () {
     sinon.stub(connection, 'execute').resolves([postProductIdFromDb]);
 

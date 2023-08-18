@@ -38,7 +38,7 @@ describe('Realizando testes - SALES CONTROLLER:', function () {
     expect(res.json).to.have.been.calledWith(getSalesByIdFromModel);
   });
 
-  it('Resgata um produto com id = 4 sem com sucesso - status 404', async function () {
+  it('Resgata uma venda com id = 4 sem com sucesso - status 404', async function () {
     sinon.stub(salesService, 'getSaleById').resolves({
       status: 'NOT_FOUND',
       message: 'Sale not found',
@@ -56,7 +56,7 @@ describe('Realizando testes - SALES CONTROLLER:', function () {
     expect(res.json).to.have.been.calledWith(undefined);
   });
 
-  it('Insere um produto com sucesso - status 201', async function () {
+  it('Insere uma venda com sucesso - status 201', async function () {
     sinon.stub(salesService, 'postNewSale').resolves(insertSaleFromService);
     const req = { body: [{ productId: 1, quantity: 1 }, { productId: 1, quantity: 5 }] };
     const res = { status: sinon.stub().returnsThis(), json: sinon.stub() };
@@ -65,7 +65,7 @@ describe('Realizando testes - SALES CONTROLLER:', function () {
     expect(res.json).to.have.been.calledWith(insertSaleFromService.data);
   });
 
-  it('Deleta um produto com sucesso - status 204', async function () {
+  it('Deleta uma venda com sucesso - status 204', async function () {
     sinon.stub(salesService, 'eliminateSale').resolves({ status: 'NO_CONTENT' });
 
     const req = {
@@ -82,7 +82,7 @@ describe('Realizando testes - SALES CONTROLLER:', function () {
     expect(res.end).to.have.been.calledWith();
   });
 
-  it('Deleta um produto sem sucesso - status 404', async function () {
+  it('Deleta uma venda sem sucesso - status 404', async function () {
     sinon.stub(salesService, 'eliminateSale').resolves({ status: 'NOT_FOUND', data: { message: 'Sale not found' } });
 
     const req = {
