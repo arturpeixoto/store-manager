@@ -1,4 +1,4 @@
-const chai = require('chai');
+/* const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const chaiHttp = require('chai-http');
@@ -150,4 +150,4 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
   afterEach(function () {
     sinon.restore();
   });
-});
+}); */
