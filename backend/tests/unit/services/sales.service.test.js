@@ -3,7 +3,6 @@ const sinon = require('sinon');
 const { salesModel, productsModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
 const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel } = require('../mocks/sales.mock');
-const { getProductsByIdFromModel } = require('../mocks/products.mock');
 
 const mockDate = '2023-08-15T14:49:23.000Z';
 
