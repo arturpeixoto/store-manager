@@ -4,6 +4,8 @@ const validateProductFields = require('../middlewares/validateProductFields');
 
 const route = express.Router();
 
+route.get('/search', productsController.productBySearchQuery);
+
 route.get('/:id', productsController.productById);
 
 route.put('/:id', validateProductFields, productsController.updateProduct);

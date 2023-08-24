@@ -13,7 +13,10 @@ const {
   getProductsByIdFromService,
   getProductsByIdFromModel,
   postProductsFromService,
-  updatedProductsFromService, 
+  updatedProductsFromService,
+  getProductBySearchQueryFromService,
+  getProductsBySearchQueryFromModel,
+  getInexistentProductBySearchQueryFromService, 
 } = require('../mocks/products.mock');
 
 const productNotFoundString = 'Product not found';
@@ -63,6 +66,51 @@ describe('Realizando testes - PRODUCTS CONTROLLER:', function () {
     await productsController.productById(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(undefined);
+  });
+
+  it('Resgata um produto com query = martelo com sucesso - status 200', async function () {
+    sinon.stub(productsService, 'getProductBySearchQuery').resolves(getProductBySearchQueryFromService);
+    const req = {
+      query: { q: 'martelo' },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productsController.productBySearchQuery(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(getProductsBySearchQueryFromModel);
+  });
+
+  it('Resgata um produto com query = nada com sucesso - status 200', async function () {
+    sinon.stub(productsService, 'getProductBySearchQuery').resolves(getAllProductsFromService);
+    const req = {
+      query: { q: '' },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productsController.productBySearchQuery(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(getAllProductsFromModel);
+  });
+
+  it('Resgata um produto com query = produtoInexistente com sucesso - status 200', async function () {
+    sinon.stub(productsService, 'getProductBySearchQuery').resolves(getInexistentProductBySearchQueryFromService);
+    const req = {
+      query: { q: 'produtoInexistente' },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    await productsController.productBySearchQuery(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith([]);
   });
 
   it('Cria um produto com sucesso - status 201', async function () {

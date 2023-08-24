@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { productsModel } = require('../../../src/models');
-const { getAllProductsFromModel, getProductsByIdFromModel, postProductsFromModel, updatedProductFromModel } = require('../mocks/products.mock');
+const { getAllProductsFromModel, getProductsByIdFromModel, postProductsFromModel, updatedProductFromModel, getProductsBySearchQueryFromModel } = require('../mocks/products.mock');
 const { productsService } = require('../../../src/services');
 
 const inputBatman = 'Cinto do Batman';
@@ -19,6 +19,7 @@ describe('Realizando testes - PRODUCTS SERVICE:', function () {
     expect(responseService.status).to.equal('SUCCESSFUL');
     expect(responseService.data).to.deep.equal(responseData);
   });
+
   it('Recuperando todos os produtos, porém o banco está vazio', async function () {
     sinon.stub(productsModel, 'findAll').resolves([]);
 
@@ -42,6 +43,37 @@ describe('Realizando testes - PRODUCTS SERVICE:', function () {
 
     const responseService = await productsService.getProductById(4);
     expect(responseService.status).to.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Recuperando produto com sucesso com query = martelo', async function () {
+    sinon.stub(productsModel, 'findBySearchQuery').resolves(getProductsBySearchQueryFromModel);
+    const responseData = [{ id: 1, name: 'Martelo de Thor' }];
+
+    const responseService = await productsService.getProductBySearchQuery('Martelo');
+    expect(responseService.status).to.equal('SUCCESSFUL');
+    expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Recuperando produto com sucesso com query = nada', async function () {
+    sinon.stub(productsModel, 'findBySearchQuery').resolves(getAllProductsFromModel);
+    const responseData = [
+      { id: 1, name: 'Martelo de Thor' },
+      { id: 2, name: 'Traje de encolhimento' },
+      { id: 3, name: 'Escudo do Capitão América' },
+    ];
+
+    const responseService = await productsService.getProductBySearchQuery('');
+    expect(responseService.status).to.equal('SUCCESSFUL');
+    expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Recuperando produto com sucesso com query = produtoInexistente', async function () {
+    sinon.stub(productsModel, 'findBySearchQuery').resolves([]);
+    const responseData = [];
+
+    const responseService = await productsService.getProductBySearchQuery('produtoInexiste');
+    expect(responseService.status).to.equal('SUCCESSFUL');
     expect(responseService.data).to.deep.equal(responseData);
   });
 

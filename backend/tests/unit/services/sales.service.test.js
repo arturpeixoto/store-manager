@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel, productsModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
-const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel } = require('../mocks/sales.mock');
+const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel, updatedSalesProductsFromModel } = require('../mocks/sales.mock');
 
 const mockDate = '2023-08-15T14:49:23.000Z';
 
@@ -104,7 +104,7 @@ describe('Realizando testes - SALES SERVICE:', function () {
     expect(responseService.data).to.deep.equal();
   });
 
-  it('Deletando um produto sem sucesso - produto a ser deletado não encontrado', async function () {
+  it('Deletando uma venda sem sucesso - produto a ser deletado não encontrado', async function () {
     sinon.stub(salesModel, 'findById').resolves(undefined);
     const responseData = { message: 'Sale not found' };
     const inputProductId = 1;
@@ -113,6 +113,49 @@ describe('Realizando testes - SALES SERVICE:', function () {
 
     expect(responseService.status).to.equal('NOT_FOUND');
     expect(responseService.data).to.deep.equal(responseData);
+  });
+
+  it('Atualizando uma venda com sucesso', async function () {
+    sinon.stub(salesModel, 'findById').resolves(getSalesByIdFromModel);
+    sinon.stub(salesModel, 'updateSalesProducts').resolves(updatedSalesProductsFromModel);
+    const saleId = 1;
+    const productId = 1;
+    const quantity = 4;
+
+    const responseService = await salesService.updatingSalesProducts(saleId, productId, quantity);
+
+    expect(responseService.status).to.equal('SUCCESSFUL');
+    expect(responseService.data).to.deep.equal({
+      productId: 1,
+      quantity: 4,
+      date: '2023-08-15T14:49:23.000Z',
+      saleId: 1,
+    });
+  });
+
+  it('Atualizando uma venda sem sucesso - sale not found', async function () {
+    sinon.stub(salesModel, 'findById').resolves([]);
+    const saleId = 1;
+    const productId = 1;
+    const quantity = 4;
+
+    const responseService = await salesService.updatingSalesProducts(saleId, productId, quantity);
+
+    expect(responseService.status).to.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal({ message: 'Sale not found' });
+  });
+
+  it('Atualizando uma venda sem sucesso - produto não encontrado na venda', async function () {
+    sinon.stub(salesModel, 'findById').resolves(getSalesByIdFromModel);
+    sinon.stub(salesModel, 'updateSalesProducts').resolves(updatedSalesProductsFromModel);
+    const saleId = 1;
+    const productId = 42;
+    const quantity = 4;
+
+    const responseService = await salesService.updatingSalesProducts(saleId, productId, quantity);
+
+    expect(responseService.status).to.equal('NOT_FOUND');
+    expect(responseService.data).to.deep.equal({ message: 'Product not found in sale' });
   });
 
   afterEach(function () {

@@ -1,4 +1,4 @@
-/* const chai = require('chai');
+const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const chaiHttp = require('chai-http');
@@ -30,7 +30,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
     expect(response.status).to.be.equal(200);
   });
 
-  it('Resgatando todos os produtos - sem produtos cadastrados', async function () {
+  /* it('Resgatando todos os produtos - sem produtos cadastrados', async function () {
     sinon.stub(connection, 'execute').resolves([]);
 
     const responseBody = { message: 'There are no products' };
@@ -39,7 +39,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
   
     expect(response.body).to.be.deep.equal(responseBody);
     expect(response.status).to.be.equal(200);
-  });
+  }); */
 
   it('Resgatando produto com id existente ', async function () {
     sinon.stub(connection, 'execute').resolves([[getProductsByIdFromDB]]);
@@ -52,7 +52,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
     expect(response.status).to.be.equal(200);
   });
 
-  it('Resgatando produto com id inexistente ', async function () {
+  /* it('Resgatando produto com id inexistente ', async function () {
     sinon.stub(connection, 'execute').resolves([[]]);
 
     const responseBody = { message: 'Product not found' };
@@ -61,7 +61,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
   
     expect(response.body).to.be.deep.equal(responseBody);
     expect(response.status).to.be.equal(404);
-  });
+  }); */
 
   it('Inserindo produto com sucesso', async function () {
     sinon.stub(connection, 'execute')
@@ -79,7 +79,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
     expect(response.status).to.be.equal(201);
   });
 
-  it('Inserindo produto sem sucesso - chave do body incorreta', async function () {
+  /* it('Inserindo produto sem sucesso - chave do body incorreta', async function () {
     const responseBody = { message: '"name" is required' };
     const requestBody = { errado: stringCintoDoBatman };
     
@@ -96,7 +96,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
   
     expect(response.body).to.be.deep.equal({ message: '"name" length must be at least 5 characters long' });
     expect(response.status).to.be.equal(422);
-  });
+  }); */
 
   it('Alterando nome do produto com sucesso', async function () {
     sinon.stub(connection, 'execute')
@@ -116,7 +116,7 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
     expect(response.status).to.be.equal(200);
   });
 
-  it('Alterando nome do produto sem sucesso - produto não encontrado', async function () {
+  /* it('Alterando nome do produto sem sucesso - produto não encontrado', async function () {
     sinon.stub(connection, 'execute')
       .onFirstCall()
       .resolves([[]]);
@@ -145,9 +145,9 @@ describe('Realizando teste de integração - PRODUCT ROUTE:', function () {
   
     expect(response.body).to.be.deep.equal({ message: '"name" length must be at least 5 characters long' });
     expect(response.status).to.be.equal(422);
-  });
+  }); */
 
   afterEach(function () {
     sinon.restore();
   });
-}); */
+});

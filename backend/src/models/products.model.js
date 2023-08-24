@@ -17,6 +17,15 @@ const findMultipleById = async (productsBody) => {
   return results;
 };
 
+const findBySearchQuery = async (string) => {
+  const [products] = await connection.execute(
+    `SELECT * FROM products 
+    WHERE name LIKE ?`, 
+    [`%${string}%`],
+  );
+  return camelize(products);
+};
+
 const insert = async (name) => {
   const query = 'INSERT INTO products (name) VALUE (?);';
   const [{ insertId }] = await connection.execute(query, [name]);
@@ -40,4 +49,5 @@ module.exports = {
   update,
   eliminate,
   findMultipleById,
+  findBySearchQuery,
 };

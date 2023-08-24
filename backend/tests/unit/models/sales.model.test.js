@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 const { salesModel } = require('../../../src/models');
-const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel, returnDeleteSaleFromDB } = require('../mocks/sales.mock');
+const { getAllSalesFromModel, getSalesByIdFromModel, insertSaleFromModel, returnDeleteSaleFromDB, returnUpdateNewDateFromDB, returnUpdateQuantityFromDB, returnUpdatedSelectFromDB } = require('../mocks/sales.mock');
 
 describe('Realizando testes - SALES MODEL:', function () {
   it('Recuperando todos as vendas com sucesso', async function () {
@@ -49,6 +49,26 @@ describe('Realizando testes - SALES MODEL:', function () {
 
     expect(result[0].affectedRows).to.be.equal(1);
     expect(result[0].info).to.be.equal('');
+  });
+  
+  it('Atualizando uma venda com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+      .onFirstCall()
+      .resolves(returnUpdateNewDateFromDB)
+      .onSecondCall()
+      .resolves(returnUpdateQuantityFromDB)
+      .onThirdCall()
+      .resolves([[returnUpdatedSelectFromDB]]);
+
+      const inputData = { quantity: 4 };
+      const sale = await salesModel.updateSalesProducts(inputData);
+      expect(sale).to.be.an('object');
+      expect(sale).to.be.deep.equal({
+        productId: 1,
+        quantity: 4,
+        date: '2023-08-15T14:49:23.000Z',
+        saleId: 1,
+      });
   });
 
   afterEach(function () {

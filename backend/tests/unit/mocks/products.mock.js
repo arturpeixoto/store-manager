@@ -1,12 +1,16 @@
+const marteloString = 'Martelo de Thor';
+
 const postProductIdFromDb = { insertId: 4 };
 
 const getAllProductsFromModel = [
-  { id: 1, name: 'Martelo de Thor' },
+  { id: 1, name: marteloString },
   { id: 2, name: 'Traje de encolhimento' },
   { id: 3, name: 'Escudo do Capitão América' },
 ];
 
-const getProductsByIdFromModel = { id: 1, name: 'Martelo de Thor' };
+const getProductsByIdFromModel = { id: 1, name: marteloString };
+
+const getProductsBySearchQueryFromModel = [{ id: 1, name: marteloString }];
 
 const updatedProductFromModel = { id: 1, name: 'Cinto do Batman' };
 
@@ -17,10 +21,22 @@ const updatedProductsFromService = {
   ],
 };
 
+const getProductBySearchQueryFromService = {
+  status: 'SUCCESSFUL',
+  data: [
+    { id: 1, name: marteloString },
+  ],
+};
+
+const getInexistentProductBySearchQueryFromService = {
+  status: 'SUCCESSFUL',
+  data: [],
+};
+
 const getAllProductsFromService = {
   status: 'SUCCESSFUL',
   data: [
-    { id: 1, name: 'Martelo de Thor' },
+    { id: 1, name: marteloString },
     { id: 2, name: 'Traje de encolhimento' },
     { id: 3, name: 'Escudo do Capitão América' },
   ],
@@ -29,7 +45,7 @@ const getAllProductsFromService = {
 const getProductsByIdFromService = {
   status: 'SUCCESSFUL',
   data: [
-    { id: 1, name: 'Martelo de Thor' },
+    { id: 1, name: marteloString },
   ],
 };
 
@@ -82,4 +98,7 @@ module.exports = {
   returnDeleteFromDB,
   updatedProductFromModel,
   updatedProductsFromService,
+  getProductsBySearchQueryFromModel,
+  getProductBySearchQueryFromService,
+  getInexistentProductBySearchQueryFromService,
 };

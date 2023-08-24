@@ -19,6 +19,12 @@ const getProductById = async (productId) => {
   return { status: 'SUCCESSFUL', data };
 };
 
+const getProductBySearchQuery = async (query) => {
+  const data = await productsModel.findBySearchQuery(query);
+  
+  return { status: 'SUCCESSFUL', data };
+};
+
 const insertNewProduct = async (name) => {
   const error = schema.validateProductName({ name });
   if (error) return { status: error.status, data: { message: error.message } };
@@ -58,4 +64,5 @@ module.exports = {
   insertNewProduct,
   updatingProduct,
   eliminateProduct,
+  getProductBySearchQuery,
 };
